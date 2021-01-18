@@ -117,7 +117,7 @@ endgame = function(t) {
 		if (e.srcElement.id == 'sharebtn') {
 			FB.ui({
 				method: 'feed',
-				link: 'http://fukuno.jig.jp/2012/happysrch.html?ogt=' + encodeURI($('score').value + '秒で幸せを見つけました')
+				link: 'http://fukuno.jig.jp/2012/happysrch.html?ogt=' + encodeURI($('score').value + '秒で猫を見つけました')
 			});
 		} else {
 			$('end').style.visibility = 'hidden';
@@ -143,7 +143,7 @@ game = function(n) {
 		c.style.fontSize = Math.floor(w * .8)  + "px";
 		c.textContent = '辛';
 		if (i == hit) {
-			c.textContent = '幸';
+			c.textContent = '猫';
 			c.style.cursor = 'pointer';
 			c.onclick = function() {
 				if (n == 16) {
@@ -185,7 +185,7 @@ fixsec = function(msec) {
 <div id='all'>
 <div id='title'>
 <div style='margin-top: 50px'>
-Search "幸"<br>[click to start]<br>幸 = Happy<br>辛 = Hard
+Search "猫"<br>[click to start]<br>猫 = Cat<br>辛 = Hard
 </div>
 </div>
 <div id='end'>
@@ -201,10 +201,10 @@ Your score is <output id="score"></output><br>
 </div>
 
 <div id='credit'><img id='help'><a href='http://fukuno.jig.jp/2012/'>(c)taisukef CED</a></div><div id='helptips'><div id='helptipscontent'>
-幸せ探しゲーム<br>
+猫探しゲーム<br>
 <br>
-辛い中にも幸せあり。<br>
-「辛」のなかに１つだけ「幸」があるので、探してクリック（タップ）してください。<br>
+辛い中にも猫あり。<br>
+「辛」のなかに１つだけ「猫」があるので、探してクリック（タップ）してください。<br>
 </div></div>
 
 </body>
