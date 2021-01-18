@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<title>happysrch</title>
+<meta property="og:image" content="http://fukuno.jig.jp/2012/happysrch.png">
+<script defer src="util.js"></script><script defer src="help2.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=medium-dpi">
+<style>
+body {
+	margin: 0px;
+}
+#all {
+	margin: auto;
+	margin-top: 30px;
+	width: 320px;
+	xbackground: gray;
+}
+#game {
+	width: 320px;
+	height: 320px;
+	line-height: 1;
+	vertical-align: middle;
+}
+#title {
+	display: inline-block;
+	position: absolute;
+	visibility: hidden;
+	text-align: center;
+	font-size: 40px;
+	border: 1px solid black;
+	padding: auto;
+	width: 318px;
+	height: 318px;
+}
+#end {
+	display: inline-block;
+	position: absolute;
+	visibility: hidden;
+	text-align: center;
+	font-size: 40px;
+	border: 1px solid black;
+	padding: auto;
+	width: 318px;
+	height: 318px;
+}
+#end button {
+	background: white;
+	border: 3px solid black;
+}
+#game div {
+	display: inline-block;
+	text-align: center;
+	margin: 0px;
+	padding: 0px;
+	xborder: 1px solid black;
+	vertical-align: top;
+}
+#time {
+	font-size: 20px;
+	margin-top: 20px;
+	text-align: center;
+}
+/* */
+a:link {
+	color: #77f;
+	text-decoration: none;
+}
+a:visited {
+	color: #33a;
+	text-decoration: none;
+}
+a:hover {
+	color: #33a;
+	text-decoration: underline;
+}
+a:active {
+	color: #33a;
+	text-decoration: underline;
+}
+#credit {
+	text-align: center;
+	margin-top: 60px;
+	font-size: 12px;
+}
+</style>
+<script src="http://connect.facebook.net/en_US/all.js"></script>
+<script>
+var time;
+onload = function() {
+	title();
+	
+	// facebook share
+	FB.init({ appId:'339909742685691', cookie:true, status:true, xfbml:true });
+}
+title = function() {
+	$('title').style.visibility = 'visible';
+	$('title').onclick = function() {
+		$('title').style.visibility = 'hidden';
+		startgame();
+	};
+}
+var tid;
+startgame = function() {
+	time = new Date().getTime();
+	tid = setInterval(function() {
+		var dt = new Date().getTime() - time;
+		$('time').textContent = fixsec(dt);
+	}, 10);
+	game(2);
+}
+endgame = function(t) {
+	$('end').style.visibility = 'visible';
+	$('score').value = fixsec(t);
+	$('end').onclick = function(e) {
+		if (e.srcElement.id == 'sharebtn') {
+			FB.ui({
+				method: 'feed',
+				link: 'http://fukuno.jig.jp/2012/happysrch.html?ogt=' + encodeURI($('score').value + '秒で幸せを見つけました')
+			});
+		} else {
+			$('end').style.visibility = 'hidden';
+			title();
+		}
+	};
+}
+cleargame = function() {
+	var div = $('game');
+	while (div.hasChildNodes()) {
+		div.removeChild(div.lastChild);
+	}
+}
+game = function(n) {
+	var div = $('game');
+	cleargame();
+	var w = Math.floor(320 / n);// - 2;
+	var hit = random(n * n);
+	for (var i = 0; i < n * n; i++) {
+		var c = create('div');
+		c.style.width = w + "px";
+		c.style.height = w + "px";
+		c.style.fontSize = Math.floor(w * .8)  + "px";
+		c.textContent = '辛';
+		if (i == hit) {
+			c.textContent = '幸';
+			c.style.cursor = 'pointer';
+			c.onclick = function() {
+				if (n == 16) {
+					cleargame();
+					$('time').textContent = "";
+					clearInterval(tid);
+					var t = new Date().getTime() - time;
+					endgame(t);
+				} else {
+					game(n * 2);
+				}
+			}
+		}
+		div.appendChild(c);
+	}
+}
+//------------------------------------------------------------------
+$ = function(id) {
+	return document.getElementById(id);
+}
+create = function(tag) {
+	return document.createElement(tag);
+}
+random = function(n) {
+	return Math.floor(Math.random() * n);
+}
+fixnum = function(n, m) {
+	var s = '00000000000000000' + n;
+	return s.substring(s.length - m);
+}
+fixsec = function(msec) {
+	var m = msec % 1000;
+	var s = Math.floor(msec / 1000);
+	return s + "." + fixnum(m, 3);
+}
+</script>
+</head>
+<body>
+<div id='all'>
+<div id='title'>
+<div style='margin-top: 50px'>
+Search "幸"<br>[click to start]<br>幸 = Happy<br>辛 = Hard
+</div>
+</div>
+<div id='end'>
+<div style='margin-top: 50px'>
+Clear!<br>
+Your score is <output id="score"></output><br>
+<button id='sharebtn'>share on facebook</button>
+</div>
+</div>
+<div id='game'>
+</div>
+<div id='time'></div>
+</div>
+
+<div id='credit'><img id='help'><a href='http://fukuno.jig.jp/2012/'>(c)taisukef CED</a></div><div id='helptips'><div id='helptipscontent'>
+幸せ探しゲーム<br>
+<br>
+辛い中にも幸せあり。<br>
+「辛」のなかに１つだけ「幸」があるので、探してクリック（タップ）してください。<br>
+</div></div>
+
+</body>
+</html>
